@@ -22,7 +22,9 @@ $mount|grep bucket             ## where bucket is ur mount point name .
 
 $vi /etc/fstab   ### insert the below command in fstab
 
-s3fs#sibintest /root/bucket fuse allow_other,umask=227,uid=0,gid=0,use_cache=/root/cache 0 0
+$s3fs#sibintest /root/bucket fuse allow_other,umask=227,uid=0,gid=0,use_cache=/root/cache 0 0    ## amazon machines for machines outside aws use below command.
+
+$s3fs#sibintest /bucket fuse _netdev,allow_other,url=https://s3.amazonaws.com 0 0    ## this is for machines outside amazon sibintest is the name of the bucket and /bucket is the mount point in linux machine
 
 
 ## where sibintest is the bucket name and gid=0 ,gid=0   the value sero is ur gid and uid values ..
