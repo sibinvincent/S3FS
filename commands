@@ -1,0 +1,36 @@
+To install fuse in aws linux run the below command.
+
+$sudo amazon-linux-extras install epel
+$sudo yum install s3fs-fuse                             ###  for other linux you can get command from here https://github.com/sibinvincent/s3fs-fuse
+
+$aws configure       ## now you should give the aws user with s3 full access accesskey and secret key if you are not using aws ec2 role with s3full access
+
+##Create the custom password file using the below command .
+
+$echo ACCESS_KEY_ID:SECRET_ACCESS_KEY > ${HOME}/.passwd-s3fs      ## where ACCESS_KEY_ID:SECRET_ACCESS_KEY  is your access key and secret key .
+$chmod 600 ${HOME}/.passwd-s3fs                                   ## add permission with this command 
+
+
+
+$s3fs mybucket /path/to/mountpoint -o passwd_file=${HOME}/.passwd-s3fs -o nonempty  ## mount the s3fs where mybucket is the name of your bucket , /path/to/mountpoint is the path to your local mount point .
+
+$mount|grep bucket             ## where bucket is ur mount point name .
+
+
+
+## to keep the mount permenant you should add the below command in fstab
+
+$vi /etc/fstab   ### insert the below command in fstab
+
+s3fs#sibintest /root/bucket fuse allow_other,umask=227,uid=0,gid=0,use_cache=/root/cache 0 0
+
+
+## where sibintest is the bucket name and gid=0 ,gid=0   the value sero is ur gid and uid values ..
+## $id -u will give give u UID and $id -g will give you gid.
+
+
+
+other reference 
+==========================
+https://serverfault.com/questions/842615/automatically-mount-bucket-with-s3fs-on-boot
+
